@@ -12,11 +12,11 @@ This repository demonstrates a closed-loop orchestration system that introduces 
 
 ```mermaid
 graph TD
-    A[Raw B2B Lead List/Webhooks] --> B{n8n: Stateful Deduplication Node}
-    B -->|Cached in 1,000 URL Memory| Z[Drop: Already Contacted]
-    B -->|New Lead| C[Data Extraction & Enrichment]
+    A[Raw B2B Lead List / Webhooks] --> B{n8n: Stateful Deduplication Node}
+    B -->|Cached in 1000 URL Memory| Z[Drop: Already Contacted]
+    B -->|New Lead| C[Data Extraction and Enrichment]
     C --> D[Groq API: Llama-3]
-    D -->|Analyze Pain Points & Write Copy| E{Anti-Spam Protocol}
+    D -->|Analyze Pain Points and Write Copy| E{Anti-Spam Protocol}
     E -->|Structural Spintax Variance| F[Inject Dynamic HTML]
     F --> G{Human-Mimicry Jitter}
     G -->|Randomized 3-9 Min Delay| H[SMTP Sender Rotation]
@@ -28,9 +28,18 @@ graph TD
     style H fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px,color:#fff
 ```
 
+---
+
+### 🔴 LIVE DEMONSTRATION: Stateful Memory in Action
+*Proof of Life: The system successfully ingests a new lead, routes it to the Llama-3 AI, and instantaneously blocks the identical subsequent payload using a RAM-hijacked stateful cache mechanism to protect API budgets.*
+
+[https://github.com/user-attachments/assets/704617cc-4430-416e-87d6-8fd98db8d93c](https://github.com/user-attachments/assets/704617cc-4430-416e-87d6-8fd98db8d93c)
+
+---
+
 ### 🛡️ Core Engineering Capabilities
 
-1. **Stateful Memory & Deduplication:** Utilizes a custom JavaScript execution node within n8n to cache and track up to 1,000 distinct prospect URLs/IDs. Ensures zero duplicate outreach and protects brand reputation.
+1. **Stateful Memory & Deduplication:** Utilizes a custom JavaScript execution node (RAM Hijack) within n8n to cache and track distinct prospect URLs/IDs. Ensures zero duplicate outreach and protects brand reputation.
 2. **High-Frequency LLM Enrichment:** Integrates with the Llama-3 model via Groq API using OAuth-authenticated HTTP requests. Analyzes target company data to craft highly specific, non-templated email drafts at ultra-low latency.
 3. **Anti-Spam Jitter & Sender Rotation:** Replaces standard loop nodes with randomized delay algorithms (jitter) and automated SMTP rotation. This simulates organic human typing and sending patterns to bypass rigid Google Workspace/Microsoft 365 spam filters.
 4. **Omnichannel Architecture:** Stateless entry points allow leads to be ingested from multiple sources (LinkedIn scraping arrays, Webhooks, CRM triggers) into a single, unified stateful pipeline.
@@ -54,7 +63,7 @@ Deploying this pipeline locally for development and testing:
 
 **1. Clone the repository**
 ```bash
-git clone [https://github.com/alirosyid/stateful-abm-engine.git](https://github.com/alirosyid/stateful-abm-engine.git)
+git clone https://github.com/alirosyid/stateful-abm-engine.git
 cd stateful-abm-engine
 ```
 
