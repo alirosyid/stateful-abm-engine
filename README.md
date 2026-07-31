@@ -8,33 +8,23 @@ Standard cold email scripts are stateless and spam-heavy, leading to burned doma
 
 This repository demonstrates a closed-loop orchestration system that introduces memory (state), intelligent lead research via LLMs, and anti-spam delivery protocols. It treats outreach as a programmatic B2B sales development representative (SDR).
 
-### 🔄 System Flow Diagram
+### 🔄 System Flow Pipeline
 
-```mermaid
-graph TD
-    %% 1. DEKLARASI VARIABEL (Strict Mode)
-    id1["Raw B2B Lead List"]
-    id2["n8n Deduplication Node"]
-    id3["Drop Already Contacted"]
-    id4["Data Extraction and Enrichment"]
-    id5["Groq API Llama 3"]
-    id6["Anti Spam Protocol"]
-    id7["Inject Dynamic HTML"]
-    id8["Human Mimicry Jitter"]
-    id9["SMTP Sender Rotation"]
-    id10["Deliver Personalized Email"]
-
-    %% 2. KONEKSI LOGIKA
-    id1 --> id2
-    id2 -->|"Cached URL"| id3
-    id2 -->|"New Lead"| id4
-    id4 --> id5
-    id5 -->|"Analyze Pain Points"| id6
-    id6 -->|"Spintax Variance"| id7
-    id7 --> id8
-    id8 -->|"Randomized Min Delay"| id9
-    id9 --> id10
-```
+📦 **Raw B2B Lead List / Webhooks**
+⬇️
+⚙️ **n8n: Stateful Deduplication Node**
+┣━━ ❌ *[Cached in RAM]* ➔ **Drop (Already Contacted)**
+┗━━ ✅ *[New Lead]* ➔ **Data Extraction & Enrichment**
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬇️
+🧠 **Groq API: Llama-3** *(Analyze Pain Points & Write Copy)*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬇️
+🛡️ **Anti-Spam Protocol**
+┣━━ 🧬 Inject Dynamic HTML & Spintax
+┗━━ 🕒 Human-Mimicry Jitter (Random 3-9 Min Delay)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬇️
+🔄 **SMTP Sender Rotation**
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬇️
+📨 **Deliver Hyper-Personalized Email**
 
 ---
 
