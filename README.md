@@ -12,15 +12,15 @@ This repository demonstrates a closed-loop orchestration system that introduces 
 
 ```mermaid
 graph TD
-    A["Raw B2B Lead List / Webhooks"] --> B{"n8n: Stateful Deduplication Node"}
-    B -->|Cached in 1000 URL Memory| Z["Drop: Already Contacted"]
-    B -->|New Lead| C["Data Extraction and Enrichment"]
-    C --> D["Groq API: Llama-3"]
-    D -->|Analyze Pain Points and Write Copy| E{"Anti-Spam Protocol"}
-    E -->|Structural Spintax Variance| F["Inject Dynamic HTML"]
-    F --> G{"Human-Mimicry Jitter"}
-    G -->|Randomized 3-9 Min Delay| H["SMTP Sender Rotation"]
-    H --> I["Deliver Hyper-Personalized Email"]
+    A[Raw B2B Lead List] --> B{n8n Deduplication Node}
+    B -->|Cached URL Memory| Z[Drop Already Contacted]
+    B -->|New Lead| C[Data Extraction and Enrichment]
+    C --> D[Groq API Llama 3]
+    D -->|Analyze Pain Points| E{Anti Spam Protocol}
+    E -->|Spintax Variance| F[Inject Dynamic HTML]
+    F --> G{Human Mimicry Jitter}
+    G -->|Randomized Min Delay| H[SMTP Sender Rotation]
+    H --> I[Deliver Personalized Email]
     
     style B fill:#0ea5e9,stroke:#0284c7,stroke-width:2px,color:#fff
     style D fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
