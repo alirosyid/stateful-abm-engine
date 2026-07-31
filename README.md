@@ -12,15 +12,15 @@ This repository demonstrates a closed-loop orchestration system that introduces 
 
 ```mermaid
 graph TD
-    A[Raw B2B Lead List / Webhooks] --> B{n8n: Stateful Deduplication Node}
-    B -->|Cached in 1000 URL Memory| Z[Drop: Already Contacted]
-    B -->|New Lead| C[Data Extraction and Enrichment]
-    C --> D[Groq API: Llama-3]
-    D -->|Analyze Pain Points and Write Copy| E{Anti-Spam Protocol}
-    E -->|Structural Spintax Variance| F[Inject Dynamic HTML]
-    F --> G{Human-Mimicry Jitter}
-    G -->|Randomized 3-9 Min Delay| H[SMTP Sender Rotation]
-    H --> I[Deliver Hyper-Personalized Email]
+    A["Raw B2B Lead List / Webhooks"] --> B{"n8n: Stateful Deduplication Node"}
+    B -->|Cached in 1000 URL Memory| Z["Drop: Already Contacted"]
+    B -->|New Lead| C["Data Extraction and Enrichment"]
+    C --> D["Groq API: Llama-3"]
+    D -->|Analyze Pain Points and Write Copy| E{"Anti-Spam Protocol"}
+    E -->|Structural Spintax Variance| F["Inject Dynamic HTML"]
+    F --> G{"Human-Mimicry Jitter"}
+    G -->|Randomized 3-9 Min Delay| H["SMTP Sender Rotation"]
+    H --> I["Deliver Hyper-Personalized Email"]
     
     style B fill:#0ea5e9,stroke:#0284c7,stroke-width:2px,color:#fff
     style D fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
@@ -33,7 +33,7 @@ graph TD
 ### 🔴 LIVE DEMONSTRATION: Stateful Memory in Action
 *Proof of Life: The system successfully ingests a new lead, routes it to the Llama-3 AI, and instantaneously blocks the identical subsequent payload using a RAM-hijacked stateful cache mechanism to protect API budgets.*
 
-[https://github.com/user-attachments/assets/704617cc-4430-416e-87d6-8fd98db8d93c](https://github.com/user-attachments/assets/704617cc-4430-416e-87d6-8fd98db8d93c)
+https://github.com/user-attachments/assets/704617cc-4430-416e-87d6-8fd98db8d93c
 
 ---
 
@@ -63,7 +63,7 @@ Deploying this pipeline locally for development and testing:
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/alirosyid/stateful-abm-engine.git
+git clone [https://github.com/alirosyid/stateful-abm-engine.git](https://github.com/alirosyid/stateful-abm-engine.git)
 cd stateful-abm-engine
 ```
 
