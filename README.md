@@ -77,15 +77,3 @@ Deploying this pipeline locally for development and testing:
 ```bash
 git clone [https://github.com/alirosyid/stateful-abm-engine.git](https://github.com/alirosyid/stateful-abm-engine.git)
 cd stateful-abm-engine
-```
-
-**2. Configure Environment Variables**
-Include your Groq API keys, n8n credentials, and SMTP arrays.
-```bash
-cp .env.example .env
-```
-
-**3. Deploy Engine**
-```bash
-docker-compose up -d
-```
