@@ -12,15 +12,28 @@ This repository demonstrates a closed-loop orchestration system that introduces 
 
 ```mermaid
 graph TD
-    A[Raw B2B Lead List] --> B(n8n Deduplication Node)
-    B -->|Cached URL| Z[Drop Already Contacted]
-    B -->|New Lead| C[Data Extraction and Enrichment]
-    C --> D(Groq API Llama 3)
-    D -->|Analyze Pain Points| E(Anti Spam Protocol)
-    E -->|Spintax Variance| F[Inject Dynamic HTML]
-    F --> G(Human Mimicry Jitter)
-    G -->|Randomized Min Delay| H(SMTP Sender Rotation)
-    H --> I[Deliver Personalized Email]
+    %% 1. DEKLARASI VARIABEL (Strict Mode)
+    id1["Raw B2B Lead List"]
+    id2["n8n Deduplication Node"]
+    id3["Drop Already Contacted"]
+    id4["Data Extraction and Enrichment"]
+    id5["Groq API Llama 3"]
+    id6["Anti Spam Protocol"]
+    id7["Inject Dynamic HTML"]
+    id8["Human Mimicry Jitter"]
+    id9["SMTP Sender Rotation"]
+    id10["Deliver Personalized Email"]
+
+    %% 2. KONEKSI LOGIKA
+    id1 --> id2
+    id2 -->|"Cached URL"| id3
+    id2 -->|"New Lead"| id4
+    id4 --> id5
+    id5 -->|"Analyze Pain Points"| id6
+    id6 -->|"Spintax Variance"| id7
+    id7 --> id8
+    id8 -->|"Randomized Min Delay"| id9
+    id9 --> id10
 ```
 
 ---
