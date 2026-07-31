@@ -12,34 +12,15 @@ This repository demonstrates a closed-loop orchestration system that introduces 
 
 ```mermaid
 graph TD
-    %% 1. DEFINISI NODE (Deklarasi eksplisit agar parser GitHub tidak crash)
-    A[Raw B2B Lead List]
-    B{n8n Deduplication Node}
-    Z[Drop Already Contacted]
-    C[Data Extraction and Enrichment]
-    D[Groq API Llama 3]
-    E{Anti Spam Protocol}
-    F[Inject Dynamic HTML]
-    G{Human Mimicry Jitter}
-    H[SMTP Sender Rotation]
-    I[Deliver Personalized Email]
-
-    %% 2. DEFINISI KONEKSI (Hanya merujuk pada variabel ID)
-    A --> B
-    B -->|Cached URL| Z
-    B -->|New Lead| C
-    C --> D
-    D -->|Analyze Pain Points| E
-    E -->|Spintax Variance| F
-    F --> G
-    G -->|Randomized Min Delay| H
-    H --> I
-    
-    %% 3. STYLING (Wajib menggunakan 6-digit Hex Code #ffffff)
-    style B fill:#0ea5e9,stroke:#0284c7,stroke-width:2px,color:#ffffff
-    style D fill:#10b981,stroke:#059669,stroke-width:2px,color:#ffffff
-    style G fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#ffffff
-    style H fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px,color:#ffffff
+    A[Raw B2B Lead List] --> B(n8n Deduplication Node)
+    B -->|Cached URL| Z[Drop Already Contacted]
+    B -->|New Lead| C[Data Extraction and Enrichment]
+    C --> D(Groq API Llama 3)
+    D -->|Analyze Pain Points| E(Anti Spam Protocol)
+    E -->|Spintax Variance| F[Inject Dynamic HTML]
+    F --> G(Human Mimicry Jitter)
+    G -->|Randomized Min Delay| H(SMTP Sender Rotation)
+    H --> I[Deliver Personalized Email]
 ```
 
 ---
