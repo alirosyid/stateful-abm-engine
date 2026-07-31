@@ -8,23 +8,37 @@ Standard cold email scripts are stateless and spam-heavy, leading to burned doma
 
 This repository demonstrates a closed-loop orchestration system that introduces memory (state), intelligent lead research via LLMs, and anti-spam delivery protocols. It treats outreach as a programmatic B2B sales development representative (SDR).
 
-### 🔄 System Flow Pipeline
+### 🔄 System Flow Diagram
 
-📦 **Raw B2B Lead List / Webhooks**
-⬇️
-⚙️ **n8n: Stateful Deduplication Node**
-┣━━ ❌ *[Cached in RAM]* ➔ **Drop (Already Contacted)**
-┗━━ ✅ *[New Lead]* ➔ **Data Extraction & Enrichment**
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬇️
-🧠 **Groq API: Llama-3** *(Analyze Pain Points & Write Copy)*
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬇️
-🛡️ **Anti-Spam Protocol**
-┣━━ 🧬 Inject Dynamic HTML & Spintax
-┗━━ 🕒 Human-Mimicry Jitter (Random 3-9 Min Delay)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬇️
-🔄 **SMTP Sender Rotation**
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬇️
-📨 **Deliver Hyper-Personalized Email**
+```text
+    [ Webhooks / Raw B2B Leads ]
+                 │
+                 ▼
+    { n8n: Stateful Deduplication } ──(Duplicate)──> [ DROP ]
+                 │
+            (New Lead)
+                 │
+                 ▼
+      [ Extraction & Enrichment ]
+                 │
+                 ▼
+         [ Groq API: Llama-3 ]
+    (Pain Point Analysis & Copywriting)
+                 │
+                 ▼
+        { Anti-Spam Protocol }
+                 │
+        ├────────┴────────┐
+        ▼                 ▼
+    [ Spintax ]       [ Jitter Delay ]
+        │                 │
+        ├────────┬────────┘
+                 ▼
+      [ SMTP Sender Rotation ]
+                 │
+                 ▼
+    [ Deliver Personalized Email ]
+```
 
 ---
 
