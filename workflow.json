@@ -1,0 +1,120 @@
+{
+  "name": "Stateful ABM Outreach & Enrichment",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "abm-lead-ingest",
+        "options": {}
+      },
+      "name": "Webhook Ingest (Lead Source)",
+      "type": "n8n-nodes-base.webhook",
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// STATEFUL DEDUPLICATION MEMORY\nconst url = $input.item.json.body.website;\nconst cache = $getWorkflowStaticData('global');\n\ncache.contactedUrls = cache.contactedUrls || [];\n\nif (cache.contactedUrls.includes(url)) {\n  return [{ json: { status: 'DUPLICATE', url: url } }];\n}\n\n// Add to memory, limit to 1000\ncache.contactedUrls.push(url);\nif(cache.contactedUrls.length > 1000) cache.contactedUrls.shift();\n\nreturn [{ json: { status: 'NEW_LEAD', url: url, company: $input.item.json.body.company } }];"
+      },
+      "name": "Redis Memory / Deduplication",
+      "type": "n8n-nodes-base.code",
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.status}}",
+              "value2": "NEW_LEAD"
+            }
+          ]
+        }
+      },
+      "name": "Check Status",
+      "type": "n8n-nodes-base.if",
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "method": "POST",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "llama3-70b-8192"
+            },
+            {
+              "name": "messages",
+              "value": "=[{\"role\": \"system\", \"content\": \"Analyze the company and identify 1 main operational pain point.\"}, {\"role\": \"user\", \"content\": \"Company: {{$json.company}}\"}]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Groq Llama-3 Enrichment",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [850, 200]
+    },
+    {
+      "parameters": {
+        "amount": "={{Math.floor(Math.random() * (9 - 3 + 1)) + 3}}",
+        "unit": "minutes"
+      },
+      "name": "Anti-Spam Jitter (3-9 Mins)",
+      "type": "n8n-nodes-base.wait",
+      "position": [1050, 200]
+    }
+  ],
+  "connections": {
+    "Webhook Ingest (Lead Source)": {
+      "main": [
+        [
+          {
+            "node": "Redis Memory / Deduplication",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Memory / Deduplication": {
+      "main": [
+        [
+          {
+            "node": "Check Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Status": {
+      "main": [
+        [
+          {
+            "node": "Groq Llama-3 Enrichment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Llama-3 Enrichment": {
+      "main": [
+        [
+          {
+            "node": "Anti-Spam Jitter (3-9 Mins)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {}
+}
