@@ -77,3 +77,25 @@ Deploying this pipeline locally for development and testing:
 ```bash
 git clone [https://github.com/alirosyid/stateful-abm-engine.git](https://github.com/alirosyid/stateful-abm-engine.git)
 cd stateful-abm-engine
+```
+
+**2. Configure Environment Variables**
+Create your `.env` file based on the example. You will need:
+* `GROQ_API_KEY` (For Llama-3 integration)
+* `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` (For email delivery rotation)
+
+```bash
+cp .env.example .env
+```
+
+**3. Spin Up the Infrastructure**
+```bash
+docker-compose up -d
+```
+
+**4. Import the Stateful Workflow**
+* Open your local n8n instance at `http://localhost:5678`
+* Go to **Workflows** > **Add Workflow**
+* Click the **Options (⚙️)** menu at the top right > **Import from File**
+* Select the `workflow.json` file from this repository.
+* Activate the workflow and start feeding webhooks!
