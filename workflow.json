@@ -1,5 +1,4 @@
 {
-  "name": "Stateful ABM Outreach & Enrichment",
   "nodes": [
     {
       "parameters": {
@@ -9,47 +8,78 @@
       },
       "name": "Webhook Ingest (Lead Source)",
       "type": "n8n-nodes-base.webhook",
-      "position": [250, 300]
+      "position": [
+        -496,
+        48
+      ],
+      "id": "5a5ea0fd-8e7b-4785-96a2-f479416b5c02",
+      "typeVersion": 2.1,
+      "webhookId": "3136b143-3b9e-4ee1-b680-5115d917afac"
     },
     {
       "parameters": {
-        "jsCode": "// STATEFUL DEDUPLICATION MEMORY\nconst url = $input.item.json.body.website;\nconst cache = $getWorkflowStaticData('global');\n\ncache.contactedUrls = cache.contactedUrls || [];\n\nif (cache.contactedUrls.includes(url)) {\n  return [{ json: { status: 'DUPLICATE', url: url } }];\n}\n\n// Add to memory, limit to 1000\ncache.contactedUrls.push(url);\nif(cache.contactedUrls.length > 1000) cache.contactedUrls.shift();\n\nreturn [{ json: { status: 'NEW_LEAD', url: url, company: $input.item.json.body.company } }];"
+        "jsCode": "// RETAS MESIN: Membajak library bawaan 'lodash' untuk menyimpan memori\n// murni di dalam RAM karena versi n8n ini memblokir akses eksternal.\nconst _ = require('lodash');\n\n// 1. Buat brankas siluman jika belum ada di RAM\nif (!_.abmStatefulCache) {\n    _.abmStatefulCache = {};\n}\n\nconst targetUrl = $json.body.website;\nconst targetCompany = $json.body.company;\n\n// 2. Cek apakah URL sudah dikunci di dalam brankas RAM\nif (_.abmStatefulCache[targetUrl]) {\n    return [{ \n        json: { \n            status: \"DUPLICATE\", \n            url: targetUrl, \n            source: \"RAM Hijack Cache\" \n        } \n    }];\n}\n\n// 3. Jika belum ada, kunci URL ke dalam RAM (Instan, O(1) Time Complexity)\n_.abmStatefulCache[targetUrl] = true;\n\n// 4. Loloskan prospek baru\nreturn [{ \n    json: { \n        status: \"NEW_LEAD\", \n        url: targetUrl, \n        company: targetCompany \n    } \n}];"
       },
       "name": "Redis Memory / Deduplication",
       "type": "n8n-nodes-base.code",
-      "position": [450, 300]
+      "position": [
+        -304,
+        48
+      ],
+      "id": "b13ddb58-00af-4620-aa3e-a49ba454bba5",
+      "typeVersion": 2
     },
     {
       "parameters": {
         "conditions": {
-          "string": [
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
             {
-              "value1": "={{$json.status}}",
-              "value2": "NEW_LEAD"
+              "id": "169726eb-898e-49f2-b1ec-64a19f717ce8",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "NEW_LEAD",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
             }
-          ]
-        }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": "={{ false }}",
+        "options": {}
       },
       "name": "Check Status",
       "type": "n8n-nodes-base.if",
-      "position": [650, 300]
+      "position": [
+        -112,
+        48
+      ],
+      "id": "500b63ac-acf9-444b-9680-8a0209e85357",
+      "typeVersion": 2.3
     },
     {
       "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
-        "url": "https://api.groq.com/openai/v1/chat/completions",
-        "method": "POST",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
             {
               "name": "model",
-              "value": "llama3-70b-8192"
+              "value": "llama-3.3-70b-versatile"
             },
             {
               "name": "messages",
-              "value": "=[{\"role\": \"system\", \"content\": \"Analyze the company and identify 1 main operational pain point.\"}, {\"role\": \"user\", \"content\": \"Company: {{$json.company}}\"}]"
+              "value": "={{\n  [\n    {\n      \"role\": \"system\",\n      \"content\": \"Analyze the company and identify 1 main operational pain point.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Company: \" + $json.company\n    }\n  ]\n}}"
             }
           ]
         },
@@ -57,16 +87,32 @@
       },
       "name": "Groq Llama-3 Enrichment",
       "type": "n8n-nodes-base.httpRequest",
-      "position": [850, 200]
+      "position": [
+        96,
+        -64
+      ],
+      "id": "01ad3783-dbb2-4cc0-a3a4-d10d13c665d8",
+      "typeVersion": 4.4,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "DD16A9IjXyl0jZhL",
+          "name": "groq 1"
+        }
+      }
     },
     {
       "parameters": {
-        "amount": "={{Math.floor(Math.random() * (9 - 3 + 1)) + 3}}",
-        "unit": "minutes"
+        "amount": "={{Math.floor(Math.random() * (9 - 3 + 1)) + 3}}"
       },
       "name": "Anti-Spam Jitter (3-9 Mins)",
       "type": "n8n-nodes-base.wait",
-      "position": [1050, 200]
+      "position": [
+        304,
+        -64
+      ],
+      "id": "415437cb-80ba-410e-a88e-939761253380",
+      "typeVersion": 1.1,
+      "webhookId": "21bb963b-ef21-4301-9780-3b5c9439315d"
     }
   ],
   "connections": {
@@ -115,6 +161,8 @@
       ]
     }
   },
-  "active": false,
-  "settings": {}
+  "pinData": {},
+  "meta": {
+    "instanceId": "e269d00c511838a2ab2c31ca0b863a500bc0613f5fd61db1e08abb6d3fc9c67b"
+  }
 }
